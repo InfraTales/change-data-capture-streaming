@@ -1,11 +1,13 @@
-# Change Data Capture Streaming
+# InfraTales | Real-Time CDC Pipeline – Change Data Capture with Kafka & Kinesis
+
+**Production-ready reference architecture for real-time data replication and event streaming on AWS.**
 
 > **CDC pipeline with DMS, Kafka, Kinesis integration for real-time data replication, event streaming, and database synchronization**
 
-[![AWS](https://img.shields.io/badge/AWS-Cloud-FF9900?logo=amazon-aws)](https://aws.amazon.com/)
-[![Production Ready](https://img.shields.io/badge/Production-Ready-success)](https://github.com/rahulladumor)
-[![Expert Level](https://img.shields.io/badge/Level-Expert-red)](https://aws.amazon.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![AWS](https://img.shields.io/badge/AWS-Cloud-FF9900?logo=amazon-aws)](https://aws.amazon.com/)
+[![CDK](https://img.shields.io/badge/AWS_CDK-TypeScript-blue.svg)](https://aws.amazon.com/cdk/)
 
 ## 📋 Table of Contents
 
@@ -382,3 +384,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines
 <p align="center">
   Made with ❤️ by Rahul Ladumor
 </p>
+
+<div align="center">
+  <a href="https://infratales.com">Website</a> •
+  <a href="https://infratales.com/projects">Projects</a> •
+  <a href="https://infratales.com/premium">Premium</a> •
+  <a href="https://infratales.com/newsletter">Newsletter</a>
+</div>

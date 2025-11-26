@@ -1,0 +1,43 @@
+```mermaid
+graph LR
+    subgraph Sources["Source Systems"]
+        OLTP[OLTP Databases]
+        Legacy[Legacy Systems]
+    end
+
+    subgraph Capture["CDC Capture"]
+        LogReader[Log Reader]
+        Transform[Event Transform]
+    end
+
+    subgraph Stream["Event Stream"]
+        Topic[Kafka Topics]
+        Partition[Partitions]
+    end
+
+    subgraph Process["Processing"]
+        Filter[Filter & Route]
+        Enrich[Enrich Events]
+        Aggregate[Aggregate]
+    end
+
+    subgraph Sink["Destinations"]
+        Lake[Data Lake]
+        Search[Search Index]
+        Cache[Cache Layer]
+        Warehouse[Data Warehouse]
+    end
+
+    OLTP --> LogReader
+    Legacy --> LogReader
+    LogReader --> Transform
+    Transform --> Topic
+    Topic --> Partition
+    Partition --> Filter
+    Filter --> Enrich
+    Enrich --> Aggregate
+    Aggregate --> Lake
+    Aggregate --> Search
+    Aggregate --> Cache
+    Aggregate --> Warehouse
+```

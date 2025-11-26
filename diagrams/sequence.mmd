@@ -1,0 +1,26 @@
+```mermaid
+sequenceDiagram
+    participant DB as Source Database
+    participant DMS as AWS DMS
+    participant Kafka as MSK/Kafka
+    participant Lambda as Lambda Processor
+    participant Sink as Data Sink
+
+    DB->>DB: Transaction committed
+    DB->>DMS: Read transaction log
+    DMS->>DMS: Transform to CDC event
+    DMS->>Kafka: Publish CDC event
+    Kafka->>Lambda: Trigger processing
+    Lambda->>Lambda: Transform & enrich
+    
+    par Parallel writes
+        Lambda->>Sink: Write to S3
+    and
+        Lambda->>Sink: Write to OpenSearch
+    and
+        Lambda->>Sink: Write to DynamoDB
+    end
+
+    Sink-->>Lambda: Acknowledge
+    Lambda-->>Kafka: Commit offset
+```

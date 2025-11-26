@@ -1,0 +1,51 @@
+```mermaid
+graph TD
+    subgraph Sources["Source Databases"]
+        PG[PostgreSQL]
+        MySQL[MySQL]
+        Oracle[Oracle]
+    end
+
+    subgraph Capture["Change Capture"]
+        DMS[AWS DMS]
+        Debezium[Debezium Connector]
+    end
+
+    subgraph Streaming["Event Streaming"]
+        MSK[Amazon MSK]
+        Kinesis[Kinesis Data Streams]
+    end
+
+    subgraph Processing["Stream Processing"]
+        Lambda[Lambda Processors]
+        KDA[Kinesis Data Analytics]
+    end
+
+    subgraph Sinks["Data Sinks"]
+        S3[S3 Data Lake]
+        OpenSearch[OpenSearch]
+        DynamoDB[DynamoDB]
+        Redshift[Redshift]
+    end
+
+    subgraph Monitoring["Monitoring"]
+        CloudWatch[CloudWatch]
+        Alerts[SNS Alerts]
+    end
+
+    PG --> DMS
+    MySQL --> DMS
+    Oracle --> Debezium
+    DMS --> MSK
+    Debezium --> MSK
+    MSK --> Kinesis
+    Kinesis --> Lambda
+    Kinesis --> KDA
+    Lambda --> S3
+    Lambda --> OpenSearch
+    KDA --> DynamoDB
+    KDA --> Redshift
+    DMS --> CloudWatch
+    MSK --> CloudWatch
+    CloudWatch --> Alerts
+```
