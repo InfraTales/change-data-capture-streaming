@@ -90,4 +90,4 @@ Common issues and resolutions for the **CDC Pipeline**.
 - Review Kinesis shard count – consolidate if possible
 - Implement event filtering at source
 
-> For architecture details, see `ARCHITECTURE.md`.
+> For architecture details, see the project README.
