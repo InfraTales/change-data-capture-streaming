@@ -1,103 +1,70 @@
-# Runbook
+# Operations Runbook
 
-Operational guide for deploying, operating, and maintaining the **CDC Pipeline**.
+## Overview
+This runbook provides operational procedures for managing and maintaining this infrastructure.
 
-## 1. Deployment
+## Prerequisites
+- AWS CLI configured
+- Terraform/CDK/Pulumi installed
+- Appropriate IAM permissions
 
-### Prerequisites
+## Common Operations
 
-- AWS CLI configured with appropriate credentials
-- Node.js 18+ and npm installed
-- AWS CDK CLI installed (`npm install -g aws-cdk`)
-- Source database credentials in Secrets Manager
-
-### Deploy Steps
-
+### Deployment
 ```bash
-# Install dependencies
-npm install
+# Development
+./scripts/deploy.sh dev
 
-# Bootstrap CDK (first time only)
-cdk bootstrap
-
-# Deploy to dev
-cdk deploy --context environment=dev
-
-# Deploy to production
-cdk deploy --context environment=prod
+# Production
+./scripts/deploy.sh prod
 ```
 
-## 2. Source Configuration
+### Monitoring
+- CloudWatch Dashboard: Check AWS Console
+- Alerts: Configured via SNS
+- Logs: CloudWatch Logs
 
-### Add New Source Database
+### Troubleshooting
 
-1. Store credentials in Secrets Manager
-2. Create DMS source endpoint
-3. Configure table mappings
-4. Create replication task
-5. Start replication
+#### Issue: Deployment Fails
+**Symptoms**: Terraform/CDK apply fails
+**Resolution**:
+1. Check AWS credentials
+2. Verify IAM permissions
+3. Review error logs
+4. Check resource quotas
 
-### Supported Sources
+#### Issue: High Costs
+**Symptoms**: Unexpected AWS charges
+**Resolution**:
+1. Review Cost Explorer
+2. Check for unused resources
+3. Verify auto-scaling policies
+4. Review instance types
 
-- PostgreSQL
-- MySQL
-- Oracle
-- SQL Server
-- MongoDB
+### Maintenance Windows
+- Preferred: Sunday 02:00-06:00 UTC
+- Avoid: Business hours (09:00-17:00 local time)
 
-## 3. Monitoring
+### Escalation
+1. Team Lead
+2. DevOps Manager
+3. On-call Engineer
 
-### Key Metrics to Watch
+## Emergency Procedures
 
-- **DMS**: Replication lag, CDC latency, task status
-- **Kafka/Kinesis**: Consumer lag, throughput, error rates
-- **Lambda**: Invocation errors, duration, throttling
-- **End-to-end**: Source-to-sink latency
-
-### Dashboards
-
-Pre-configured dashboards for:
-
-- Replication health overview
-- Stream throughput metrics
-- Consumer lag tracking
-- Error rate monitoring
-
-## 4. Operations
-
-### Pause Replication
-
+### Rollback
 ```bash
-aws dms stop-replication-task --replication-task-arn <arn>
+# Terraform
+terraform apply -var-file=previous.tfvars
+
+# CDK
+cdk deploy --previous-version
+
+# Pulumi
+pulumi stack select previous
+pulumi up
 ```
 
-### Resume Replication
-
-```bash
-aws dms start-replication-task --replication-task-arn <arn> \
-  --start-replication-task-type resume-processing
-```
-
-### Handle Schema Changes
-
-1. Pause replication task
-2. Update table mappings
-3. Reload affected tables
-4. Resume replication
-
-## 5. Maintenance
-
-### Regular Tasks
-
-- Monitor replication lag daily
-- Review DMS task logs weekly
-- Update source endpoint credentials before expiry
-- Archive old CDC events per retention policy
-
-### Teardown
-
-```bash
-cdk destroy --context environment=dev
-```
-
-> For troubleshooting common issues, see `docs/troubleshooting.md`.
+### Disaster Recovery
+See [DISASTER_RECOVERY.md](DISASTER_RECOVERY.md)
