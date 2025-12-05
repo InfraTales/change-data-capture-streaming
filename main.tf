@@ -1,15 +1,34 @@
-terraform {
-  required_version = ">= 1.5.0"
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
+# ============================================================================
+# Main Infrastructure Configuration
+# ============================================================================
+
+# VPC Module
+module "vpc" {
+  source = "./modules/vpc"
+
+  project_name = var.project_name
+  environment  = var.environment
+  vpc_cidr     = var.vpc_cidr
+  azs          = var.azs
 }
 
-provider "aws" {
-  region = var.region
+# Compute Module
+module "compute" {
+  source = "./modules/compute"
+
+  project_name       = var.project_name
+  environment        = var.environment
+  vpc_id             = module.vpc.vpc_id
+  private_subnet_ids = module.vpc.private_subnet_ids
+  instance_type      = var.instance_type
 }
 
-# Main infrastructure resources will be defined here
+# Monitoring Module
+module "monitoring" {
+  source = "./modules/monitoring"
+
+  project_name = var.project_name
+  environment  = var.environment
+  vpc_id       = module.vpc.vpc_id
+  alert_email  = var.alert_email
+}
